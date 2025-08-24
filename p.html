@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sliding Puzzle Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .tile {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            background-color: #fff;
+            cursor: pointer;
+            user-select: none;
+        }
+        .empty {
+            background-color: #ccc;
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container" id="game"></div>
+    <script>
+        const size = 3;
+        let tiles = [];
+
+        function createBoard() {
+            const gameContainer = document.getElementById("game");
+            gameContainer.innerHTML = "";
+            tiles = [...Array(size * size).keys()];
+            tiles.sort(() => Math.random() - 0.5);
+
+            tiles.forEach((num, index) => {
+                const tile = document.createElement("div");
+                tile.classList.add("tile");
+                if (num === 0) {
+                    tile.classList.add("empty");
+                } else {
+                    tile.innerText = num;
+                    tile.addEventListener("click", () => moveTile(index));
+                }
+                gameContainer.appendChild(tile);
+            });
+        }
+
+        function moveTile(index) {
+            const emptyIndex = tiles.indexOf(0);
+            const validMoves = [
+                emptyIndex - 1, emptyIndex + 1,
+                emptyIndex - size, emptyIndex + size
+            ];
+            if (validMoves.includes(index)) {
+                [tiles[emptyIndex], tiles[index]] = [tiles[index], tiles[emptyIndex]];
+                createBoard();
+            }
+        }
+
+        createBoard();
+    </script>
+</body>
+</html>
