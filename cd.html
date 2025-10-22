@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click the Button Game</title>
+    <link rel="stylesheet" href="cd.css">
+</head>
+<body>
+    
+    <div class="game-container">
+        <h1>Click 50 times in 15 seconds to win!</h1>
+        <button id="click-btn">Click Me</button>
+        <p>Time Left: <span id="timer">15</span> seconds</p>
+        <p>Clicks: <span id="click-count">0</span></p>
+        <p id="message"></p>
+        <h1>Click the Button Game</h1>
+        <p id="timer">Time: 15</p>
+        <p id="score">Score: 0</p>
+
+        <button id="clickButton" onclick="incrementScore()">Click Umer!</button>
+        <button id="startButton" onclick="startGame()">Start Game with Hajra!</button>
+        <p id="gameStatus"></p>
+    </div>
+    <script>
+        let timeLeft = 15;
+        let clickCount = 0;
+        let gameOver = false;
+
+        const timerElement = document.getElementById("timer");
+        const clickCountElement = document.getElementById("click-count");
+        const messageElement = document.getElementById("message");
+        const clickButton = document.getElementById("click-btn");
+
+        function startGame() {
+            const timer = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+
+                if (timeLeft === 0) {
+                    clearInterval(timer);
+                    gameOver = true;
+                    checkWinner();
+                }
+            }, 1000);
+        }
+
+        function checkWinner() {
+            if (clickCount >= 50) {
+                messageElement.textContent = "🎉 You Win!";
+                messageElement.style.color = "green";
+            } else {
+                messageElement.textContent = "❌ You Lose!";
+                messageElement.style.color = "red";
+            }
+            clickButton.disabled = true;
+        }
+
+        clickButton.addEventListener("click", () => {
+            if (!gameOver) {
+                clickCount++;
+                clickCountElement.textContent = clickCount;
+            }
+        });
+
+        // Start the game automatically when the page loads
+        startGame();
+    </script>
+    <script src="cd.js"></script>
+</body>
+</html>
